@@ -1,0 +1,33 @@
+{
+	"name": "natours",
+	"version": "1.0.0",
+	"description": "Natours Application built with Node JS",
+	"main": "server.js",
+	"scripts": {
+		"start": "NODE_ENV=production node src/server.js",
+		"dev": "nodemon src/server.js",
+		"debug": "ndb src/server.js"
+	},
+	"keywords": [
+		"Node",
+		"JS",
+		"Natour",
+		"Payment"
+	],
+	"author": "Kater Akeren",
+	"license": "ISC",
+	"dependencies": {
+		"bcryptjs": "^2.4.3",
+		"dotenv": "^8.2.0",
+		"express": "^4.17.1",
+		"jsonwebtoken": "^8.5.1",
+		"mongoose": "^5.9.10",
+		"morgan": "^1.10.0",
+		"nodemailer": "^6.4.8",
+		"slugify": "^1.4.0",
+		"validator": "^13.0.0"
+	},
+	"devDependencies": {
+		"ndb": "^1.1.5"
+	}
+}
