@@ -92,12 +92,6 @@ tourSchema.pre('save', function (next) {
 	next();
 });
 
-// POST DOCUMENT HOOK
-/* tourSchema.post('save', function (doc, next) {
-	console.log(doc);
-	next();
-}); */
-
 // QUERY MIDDLEWARE
 tourSchema.pre(/^find/, function (next) {
 	this.find({ secretTour: { $ne: true } });
@@ -105,13 +99,6 @@ tourSchema.pre(/^find/, function (next) {
 	this.startTime = Date.now();
 	next();
 });
-
-// POST QUERY HOOK
-/* tourSchema.post(/^find/, function (docs, next) {
-	console.log(`Query Took ${Date.now() - this.startTime} milliseconds`);
-	console.log(docs);
-	next();
-}); */
 
 // AGGREGATION MIDDLEWARE
 tourSchema.pre('aggregate', function (next) {
