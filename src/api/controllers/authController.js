@@ -13,6 +13,24 @@ const signToken = (id) => {
 	});
 };
 
+const sendCreatedToken = (user, statusCode, res) => {
+	const token = signToken(user._id);
+	res.status(statusCode).json({
+		status: 'success',
+		data: {
+			user
+		},
+		token
+	});
+};
+
+const sendSuccessMessage = (message, statusCode, res) => {
+	res.status(statusCode).json({
+		status: 'success',
+		message
+	});
+};
+
 exports.signUp = catchAsyncErrors(async (req, res, next) => {
 	const user = await User.create({
 		name: req.body.name,
@@ -23,15 +41,8 @@ exports.signUp = catchAsyncErrors(async (req, res, next) => {
 		passwordChangedAt: req.body.passwordChangedAt
 	});
 
-	const token = signToken(user._id);
-
-	res.status(201).json({
-		status: 'success',
-		data: {
-			user
-		},
-		token
-	});
+	// SEND TOKEN TO USER
+	sendCreatedToken(user, 201, res);
 });
 
 exports.login = catchAsyncErrors(async (req, res, next) => {
@@ -49,12 +60,8 @@ exports.login = catchAsyncErrors(async (req, res, next) => {
 		return next(new AppError('Invalid Login Credentials!', 401));
 	}
 
-	const token = signToken(user._id);
-
-	res.status(200).json({
-		status: 'success',
-		token
-	});
+	// SEND TOKEN TO USER
+	sendCreatedToken(user, 200, res);
 });
 
 exports.protect = catchAsyncErrors(async (req, res, next) => {
@@ -139,11 +146,7 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
 			subject: 'Your password reset token (valid for 10 minutes)',
 			message
 		});
-
-		res.status(200).json({
-			status: 'success',
-			message: 'Token sent to your email!'
-		});
+		sendSuccessMessage('Token sent to your email!', 200, res);
 	} catch (err) {
 		user.passwordResetToken = undefined;
 		user.passwordResetExpires = undefined;
@@ -183,9 +186,23 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
 	await user.save();
 
 	// SEND THE TOKEN TO THE USER
-	const token = signToken(user._id);
-	res.status(200).json({
-		status: 'success',
-		token
-	});
+	sendCreatedToken(user, 200, res);
+});
+
+exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
+	const { currentPassword, password, confirmPassword } = req.body;
+
+	// GRAB USER FROM COLLECTION
+	const user = await User.findById(req.user.id).select('+password');
+
+	if (!(await user.checkPasswordValidity(currentPassword, user.password))) {
+		return next(new AppError('Your current password is wrong', 401));
+	}
+
+	user.password = password;
+	user.confirmPassword = confirmPassword;
+	await user.save();
+
+	// LOG USER IN, SEND JWT
+	sendCreatedToken(user, 200, res);
 });
