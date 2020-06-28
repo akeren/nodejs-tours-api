@@ -40,6 +40,11 @@ const userSchmea = new Schema({
 			message: 'Confirm password not the same with password entered'
 		}
 	},
+	active: {
+		type: Boolean,
+		default: true,
+		select: false
+	},
 	passwordChangedAt: Date,
 	passwordResetToken: String,
 	passwordResetExpires: Date
@@ -60,6 +65,12 @@ userSchmea.pre('save', function (next) {
 	if (!this.isModified('password') || this.isNew) return next();
 
 	this.passwordChangedAt = Date.now() - 1000;
+	next();
+});
+
+// RETURN ONLY ACTIVE USERS
+userSchmea.pre(/^find/, function (next) {
+	this.find({ active: true });
 	next();
 });
 
