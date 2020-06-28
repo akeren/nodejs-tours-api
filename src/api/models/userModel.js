@@ -55,6 +55,14 @@ userSchmea.pre('save', async function (next) {
 	next();
 });
 
+// UPDATE USER'S passwordChangedAt property
+userSchmea.pre('save', function (next) {
+	if (!this.isModified('password') || this.isNew) return next();
+
+	this.passwordChangedAt = Date.now() - 1000;
+	next();
+});
+
 // INTANCE METHOD TO CHECK PASSWORD VALIDITY
 userSchmea.methods.checkPasswordValidity = async function (
 	userEnteredPassword,
