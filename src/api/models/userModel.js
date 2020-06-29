@@ -28,6 +28,11 @@ const userSchmea = new Schema({
 		type: String,
 		required: [true, 'Please provide your password'],
 		minlength: [8, 'Password must be minimum of eight (8) charcters'],
+		validate(value) {
+			if (value.toLowerCase().includes('password')) {
+				throw new Error('Password can not contain "password"');
+			}
+		},
 		select: false
 	},
 	confirmPassword: {
@@ -73,6 +78,14 @@ userSchmea.pre(/^find/, function (next) {
 	this.find({ active: true });
 	next();
 });
+
+// REMOVE SOME FIELDS ON THE USER OBJECT
+userSchmea.methods.toJSON = function () {
+	const userObj = this.toObject();
+	delete userObj.password;
+	delete userObj.__v;
+	return userObj;
+};
 
 // INTANCE METHOD TO CHECK PASSWORD VALIDITY
 userSchmea.methods.checkPasswordValidity = async function (

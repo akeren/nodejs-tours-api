@@ -1,4 +1,4 @@
-const dotenv = require('dotenv');
+require('dotenv').config({ path: 'config.env' });
 const http = require('http');
 const app = require('./app');
 
@@ -10,8 +10,6 @@ process.on('uncaughtException', (err) => {
 });
 
 const port = process.env.PORT || 4000;
-
-dotenv.config({ path: 'config.env' });
 
 // DB CONNECTION
 require('./utils/db/mongoose');
