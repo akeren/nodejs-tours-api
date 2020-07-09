@@ -3,7 +3,7 @@ const AppError = require('./../../utils/appError');
 const catchAsyncErrors = require('./../../utils/catchAsyncError');
 
 exports.getAllReviews = catchAsyncErrors(async (req, res, next) => {
-	const reviews = await Review.find({});
+	const reviews = await Review.find();
 	if (!reviews) {
 		return new AppError('Review collection is empty.', 404);
 	}
