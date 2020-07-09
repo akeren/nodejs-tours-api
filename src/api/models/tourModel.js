@@ -125,9 +125,9 @@ tourSchema.pre('save', function (next) {
 /* 
 EMBED USER'S DOCUMENT
 tourSchema.pre('save', async function (next) {
-	const guidesPromises = this.guides.map(async (id) => await User.findById(id));
-	this.guides = await Promise.all(guidesPromises);
-	next();
+	const guidesPromises = this.guides.map(async (id) => await User.findById(id))
+	this.guides = await Promise.all(guidesPromises)
+	next()
 }); */
 
 // QUERY MIDDLEWARE
@@ -135,6 +135,16 @@ tourSchema.pre(/^find/, function (next) {
 	this.find({ secretTour: { $ne: true } });
 
 	this.startTime = Date.now();
+	next();
+});
+
+// POPULATE TOUR GUIDES
+tourSchema.pre(/^find/, function (next) {
+	this.populate({
+		path: 'guides',
+		select: '-__v -passwordChangedAt'
+	});
+
 	next();
 });
 
