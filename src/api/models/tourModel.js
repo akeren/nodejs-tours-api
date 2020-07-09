@@ -1,7 +1,6 @@
 const { Schema, model } = require('mongoose');
 const validator = require('validator');
 const slugify = require('slugify');
-const User = require('./userModel');
 
 const tourSchema = new Schema(
 	{
@@ -99,7 +98,12 @@ const tourSchema = new Schema(
 				day: String
 			}
 		],
-		guides: Array
+		guides: [
+			{
+				type: Schema.ObjectId,
+				ref: 'User'
+			}
+		]
 	},
 	{
 		toJSON: { virtuals: true },
@@ -118,12 +122,13 @@ tourSchema.pre('save', function (next) {
 	next();
 });
 
-// EMBED USER'S DOCUMENT
+/* 
+EMBED USER'S DOCUMENT
 tourSchema.pre('save', async function (next) {
 	const guidesPromises = this.guides.map(async (id) => await User.findById(id));
 	this.guides = await Promise.all(guidesPromises);
 	next();
-});
+}); */
 
 // QUERY MIDDLEWARE
 tourSchema.pre(/^find/, function (next) {
