@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const validator = require('validator');
 const slugify = require('slugify');
 
 const tourSchema = new Schema(
@@ -73,7 +74,30 @@ const tourSchema = new Schema(
 		secretTour: {
 			type: Boolean,
 			default: false
-		}
+		},
+		startLocation: {
+			type: {
+				type: String,
+				enum: ['Point'],
+				default: 'Point'
+			},
+			coordinates: [Number],
+			address: String,
+			description: String
+		},
+		locations: [
+			{
+				type: {
+					type: String,
+					enum: ['Point'],
+					default: 'Point'
+				},
+				coordinates: [Number],
+				address: String,
+				description: String,
+				day: String
+			}
+		]
 	},
 	{
 		toJSON: { virtuals: true },
