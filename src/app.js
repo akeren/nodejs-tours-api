@@ -10,6 +10,7 @@ const AppError = require('./utils/appError');
 const globalErrorHandler = require('./api/controllers/helpers/errorController');
 const userRouter = require('./api/routes/userRoutes');
 const tourRouter = require('./api/routes/tourRoutes');
+const reviewRouter = require('./api/routes/reviewRoutes');
 
 const app = express();
 
@@ -62,6 +63,7 @@ app.use(express.static(`${__dirname}/public`));
  */
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/tours', tourRouter);
+app.use('/api/v1/reviews', reviewRouter);
 
 /*
  ** HANDLING UNHANDLED ROUTES
