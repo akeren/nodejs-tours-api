@@ -116,19 +116,18 @@ tourSchema.virtual('durationWeeks').get(function () {
 	return this.duration / 7;
 });
 
+// VIRTUAL POPULATE
+tourSchema.virtual('reviews', {
+	ref: 'Review',
+	foreignField: 'tour',
+	localField: '_id'
+});
+
 // DOCUMENT MIDDLEWARE: runs only for .save() & .create() mongoose methods
 tourSchema.pre('save', function (next) {
 	this.slug = slugify(this.name, { lower: true });
 	next();
 });
-
-/* 
-EMBED USER'S DOCUMENT
-tourSchema.pre('save', async function (next) {
-	const guidesPromises = this.guides.map(async (id) => await User.findById(id))
-	this.guides = await Promise.all(guidesPromises)
-	next()
-}); */
 
 // QUERY MIDDLEWARE
 tourSchema.pre(/^find/, function (next) {
