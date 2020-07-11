@@ -3,10 +3,10 @@ const AppError = require('./../../utils/appError');
 const catchAsyncErrors = require('./../../utils/catchAsyncError');
 
 exports.getAllReviews = catchAsyncErrors(async (req, res, next) => {
-	const reviews = await Review.find();
-	if (!reviews) {
-		return new AppError('Review collection is empty.', 404);
-	}
+	let filter = {};
+	if (req.params.tourId) filter = { tour: req.params.tourId };
+
+	const reviews = await Review.find(filter);
 
 	res.status(200).json({
 		status: 'success',
