@@ -33,7 +33,12 @@ exports.getReview = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.createReview = catchAsyncErrors(async (req, res, next) => {
-	const { review, rating, tour, user } = req.body;
+	let { review, rating, tour, user } = req.body;
+
+	// Allow nested routes
+	if (!tour) tour = req.params.tourId;
+	if (!user) user = req.user.id;
+
 	const newReview = await Review.create({
 		review,
 		rating,
