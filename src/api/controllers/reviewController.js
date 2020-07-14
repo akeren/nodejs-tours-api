@@ -18,21 +18,6 @@ exports.getAllReviews = catchAsyncErrors(async (req, res, next) => {
 	});
 });
 
-exports.getReview = catchAsyncErrors(async (req, res, next) => {
-	const review = await Review.findById(req.params.id);
-
-	if (!review) {
-		return new AppError('No review found with that ID', 400);
-	}
-
-	res.status(200).json({
-		status: 'success',
-		data: {
-			review
-		}
-	});
-});
-
 exports.createReview = catchAsyncErrors(async (req, res, next) => {
 	let { review, rating, tour, user } = req.body;
 
@@ -59,4 +44,5 @@ exports.createReview = catchAsyncErrors(async (req, res, next) => {
 	});
 });
 
+exports.updateReview = factory.updateOne(Review);
 exports.deleteReview = factory.deleteOne(Review);
