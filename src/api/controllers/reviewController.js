@@ -3,6 +3,13 @@ const AppError = require('./../../utils/appError');
 const catchAsyncErrors = require('./../../utils/catchAsyncError');
 const factory = require('./handlerFactory');
 
+exports.setUserTourIds = (req, res, next) => {
+	// Allow nested routes
+	if (!req.body.tour) req.body.tour = req.params.tourId;
+	if (!req.body.user) req.body.user = req.user.id;
+	next();
+};
+
 exports.getAllReviews = catchAsyncErrors(async (req, res, next) => {
 	let filter = {};
 	if (req.params.tourId) filter = { tour: req.params.tourId };
@@ -18,31 +25,6 @@ exports.getAllReviews = catchAsyncErrors(async (req, res, next) => {
 	});
 });
 
-exports.createReview = catchAsyncErrors(async (req, res, next) => {
-	let { review, rating, tour, user } = req.body;
-
-	// Allow nested routes
-	if (!tour) tour = req.params.tourId;
-	if (!user) user = req.user.id;
-
-	const newReview = await Review.create({
-		review,
-		rating,
-		tour,
-		user
-	});
-
-	if (!newReview) {
-		return new AppError('Unable to create review. Try again!', 400);
-	}
-
-	res.status(201).json({
-		status: 'success',
-		data: {
-			review: newReview
-		}
-	});
-});
-
+exports.createReview = factory.createOne(Review);
 exports.updateReview = factory.updateOne(Review);
 exports.deleteReview = factory.deleteOne(Review);

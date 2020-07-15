@@ -1,6 +1,5 @@
 const catchAsyncErrors = require('./../../utils/catchAsyncError');
 const AppError = require('./../../utils/appError');
-const { Model } = require('mongoose');
 
 exports.deleteOne = (Model) =>
 	catchAsyncErrors(async (req, res, next) => {
@@ -28,6 +27,22 @@ exports.updateOne = (Model) =>
 		}
 
 		res.status(200).json({
+			status: 'success',
+			data: {
+				data: doc
+			}
+		});
+	});
+
+exports.createOne = (Model) =>
+	catchAsyncErrors(async (req, res, next) => {
+		const doc = await Model.create(req.body);
+
+		if (!doc) {
+			return next(new AppError('Unable to create document. Try again!', 400));
+		}
+
+		res.status(201).json({
 			status: 'success',
 			data: {
 				data: doc
