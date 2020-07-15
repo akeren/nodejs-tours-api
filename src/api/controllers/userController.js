@@ -13,21 +13,8 @@ const filterRquestBodyObject = (obj, ...allowedFields) => {
 	return newObject;
 };
 
-exports.getAllUsers = catchAsyncErrors(async (req, res) => {
-	const users = await User.find({});
-
-	res.status(200).json({
-		status: 'status',
-		result: users.length,
-		data: {
-			users
-		}
-	});
-});
-
 exports.updateMe = catchAsyncErrors(async (req, res, next) => {
-	const { name, email, password, confirmPassword } = req.body;
-	if (password || confirmPassword) {
+	if (req.body.password || req.body.confirmPassword) {
 		return next(
 			new AppError(
 				'This route is not to update password. Please use /updateMyPassword'
@@ -65,6 +52,7 @@ exports.createUser = (req, res) => {
 	});
 };
 
+exports.getAllUsers = factory.getAll(User);
 exports.getUser = factory.getOne(User);
 exports.updateUser = factory.updateOne(User);
 exports.deleteUser = factory.deleteOne(User);
