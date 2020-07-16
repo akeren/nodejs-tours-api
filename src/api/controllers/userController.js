@@ -13,6 +13,11 @@ const filterRquestBodyObject = (obj, ...allowedFields) => {
 	return newObject;
 };
 
+exports.getMe = (req, res, next) => {
+	req.params.id = req.user.id;
+	next();
+};
+
 exports.updateMe = catchAsyncErrors(async (req, res, next) => {
 	if (req.body.password || req.body.confirmPassword) {
 		return next(
