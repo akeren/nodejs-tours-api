@@ -53,15 +53,41 @@ reviewSchema.statics.calcAverageRating = async function (tourId) {
 		}
 	]);
 
-	// Save the statistics to tours
-	await Tour.findByIdAndUpdate(tourId, {
-		ratingsAverage: stats[0].avgRating,
-		ratingsQuantity: stats[0].nRating
-	});
+	if (stats.length > 0) {
+		// Save the statistics to tours
+		await Tour.findByIdAndUpdate(tourId, {
+			ratingsAverage: stats[0].avgRating,
+			ratingsQuantity: stats[0].nRating
+		});
+	} else {
+		// Reset to default
+		await Tour.findByIdAndUpdate(tourId, {
+			ratingsAverage: 4.5,
+			ratingsQuantity: 0
+		});
+	}
 };
 
 reviewSchema.post('save', function () {
+	// this points to the current review object
 	this.constructor.calcAverageRating(this.tour);
+});
+
+/*
+ ** Grab the current review Object
+ ** And pass it to the next middleware
+ */
+reviewSchema.pre(/^findOneAnd/, async function (next) {
+	this.r = await this.findOne();
+	next();
+});
+
+/*
+ ** awiat this.findOne(); does not here
+ ** Because query has already executed
+ */
+reviewSchema.post(/^findOneAnd/, async function () {
+	await this.r.constructor.calcAverageRating(this.r.tour);
 });
 
 module.exports = model('Review', reviewSchema);
