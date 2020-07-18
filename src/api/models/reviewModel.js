@@ -27,6 +27,12 @@ const reviewSchema = new Schema({
 	}
 });
 
+/*
+ ** Prevent duplicate reviews on a given tour by same user
+ ** Using indexes
+ */
+reviewSchema.index({ tour: 1, user: 1 }, { unique: true });
+
 reviewSchema.pre(/^find/, function (next) {
 	this.populate({
 		path: 'user',
