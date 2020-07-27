@@ -16,7 +16,9 @@ require('./utils/db/mongoose');
 
 const server = http.createServer(app);
 
-server.listen(port, () => console.log(`App running on port ${port}...`));
+server.listen(port, () =>
+	console.log(`App running at http://127.0.0.1:${port}`)
+);
 
 // HANDLING UNHANDLED PROMISE REJECTION ERROR
 process.on('unhandledRejection', (err) => {

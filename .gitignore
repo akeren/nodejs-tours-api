@@ -1,5 +1,4 @@
 node_modules/
 src/dev-data/
-src/public/
 src/playground/
 config.env
