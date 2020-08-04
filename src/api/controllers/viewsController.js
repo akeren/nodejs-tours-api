@@ -1,7 +1,6 @@
 const Tour = require('./../models/tourModel');
 const catchAsyncErrors = require('./../../utils/catchAsyncError');
-// 20bf6b
-// 76c9ce
+
 exports.getOverview = catchAsyncErrors(async (req, res) => {
 	const tours = await Tour.find({});
 
@@ -11,8 +10,14 @@ exports.getOverview = catchAsyncErrors(async (req, res) => {
 	});
 });
 
-exports.getTour = (req, res) => {
-	res.status(200).render('tour', {
-		title: 'The Forest Hiker!'
+exports.getTour = catchAsyncErrors(async (req, res) => {
+	const tour = await Tour.findOne({ slug: req.params.slug }).populate({
+		path: 'reviews',
+		fields: 'rating review user'
 	});
-};
+
+	res.status(200).render('tour', {
+		title: tour.name,
+		tour
+	});
+});

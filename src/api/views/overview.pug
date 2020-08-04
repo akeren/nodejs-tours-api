@@ -17,20 +17,20 @@ block content
                         p.card__text= tour.summary
                         .card__data
                             svg.card__icon
-                                use(xlink:href='img/icons.svg#icon-map-pin')
+                                use(xlink:href='/img/icons.svg#icon-map-pin')
                             span= tour.startLocation.description
                         .card__data
                             svg.card__icon
-                                use(xlink:href='img/icons.svg#icon-calendar')
+                                use(xlink:href='/img/icons.svg#icon-calendar')
                             span= tour.startDates[0].toLocaleString('en-us', {month: 'long', year: 'numeric'})
                         .card__data
                             svg.card__icon
-                                use(xlink:href='img/icons.svg#icon-flag') 
+                                use(xlink:href='/img/icons.svg#icon-flag') 
                             |   
                             span= `${tour.locations.length} stops`
                         .card__data
                             svg.card__icon
-                                use(xlink:href='img/icons.svg#icon-user')
+                                use(xlink:href='/img/icons.svg#icon-user')
                             span= `${tour.maxGroupSize} people`
 
                     .card__footer
