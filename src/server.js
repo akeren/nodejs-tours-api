@@ -6,7 +6,7 @@ const logger = require('./utils/logger');
 // HANDLING UNCAUGHT EXCEPTION ERRORS
 process.on('uncaughtException', (err) => {
 	logger.info('UNCAUGHT EXCEPTION! Shutting down...');
-	logger.error(err.name, err.message);
+	logger.error(`${err.name} ${err.message}`);
 	process.exit(1);
 });
 

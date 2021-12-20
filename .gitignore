@@ -2,3 +2,4 @@ node_modules/
 src/dev-data/
 src/playground/
 config.env
+logs/
