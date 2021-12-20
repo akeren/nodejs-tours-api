@@ -1,6 +1,6 @@
-require('dotenv').config({ path: 'config.env' });
 const http = require('http');
 const app = require('./app');
+const configs = require('./config/configs');
 
 // HANDLING UNCAUGHT EXCEPTION ERRORS
 process.on('uncaughtException', (err) => {
@@ -9,7 +9,7 @@ process.on('uncaughtException', (err) => {
 	process.exit(1);
 });
 
-const port = process.env.PORT || 4000;
+const port = configs.PORT;
 
 // DB CONNECTION
 require('./utils/db/mongoose');

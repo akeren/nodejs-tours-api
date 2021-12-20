@@ -1,8 +1,9 @@
 const { connect } = require('mongoose');
+const configs = require('../../config/configs');
 
 (async () => {
 	try {
-		await connect(process.env.MONGODB_URL, {
+		await connect(configs.MONGODB_URL, {
 			useNewUrlParser: true,
 			useUnifiedTopology: true,
 			useCreateIndex: true,

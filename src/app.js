@@ -13,6 +13,7 @@ const userRouter = require('./api/routes/userRoutes');
 const tourRouter = require('./api/routes/tourRoutes');
 const reviewRouter = require('./api/routes/reviewRoutes');
 const viewsRouter = require('./api/routes/viewsRoutes');
+const configs = require('./config/configs');
 
 const app = express();
 
@@ -30,7 +31,7 @@ app.use(express.static(path.join(__dirname, '/public')));
 app.use(helmet());
 
 // Logging development requests
-if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
+if (configs === 'development') app.use(morgan('dev'));
 
 // Limit the number of requests allowed from same API
 const limiter = rateLimit({
