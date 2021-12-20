@@ -1,3 +1,4 @@
+const configs = require('../../../config/configs');
 const AppError = require('./../../../utils/appError');
 
 const handleCastErrorDB = (err) => {
@@ -56,9 +57,9 @@ const sendProdError = (err, res) => {
 	}
 };
 module.exports = (err, req, res, next) => {
-	if (process.env.NODE_ENV === 'development') {
+	if (configs.NODE_ENV === 'development') {
 		sendDevError(err, res);
-	} else if (process.env.NODE_ENV === 'production') {
+	} else if (configs.NODE_ENV === 'production') {
 		let error = { ...err };
 
 		if (err.name === 'CastError') error = handleCastErrorDB(error);
