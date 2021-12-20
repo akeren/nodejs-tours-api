@@ -4,8 +4,8 @@ const jwt = require('jsonwebtoken');
 const User = require('./../models/userModel');
 const catchAsyncErrors = require('./../../utils/catchAsyncError');
 const AppError = require('./../../utils/appError');
-const sendEmail = require('./../../utils/email');
 const configs = require('../../config/configs');
+const sendEmail = require('../../services/emailService');
 
 // CREATE USER'S AUTH TOKEN
 const signToken = (id) => {

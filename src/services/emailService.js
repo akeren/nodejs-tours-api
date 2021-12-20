@@ -1,6 +1,6 @@
-require('dotenv').config({ path: './../../config.env' });
 const nodemailer = require('nodemailer');
 const configs = require('../config/configs');
+
 const sendEmail = async (options) => {
 	// CREATE A TRANSPORTER
 	const transporter = nodemailer.createTransport({
