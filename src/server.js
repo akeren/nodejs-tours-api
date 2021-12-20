@@ -23,8 +23,8 @@ server.listen(port, () =>
 
 // HANDLING UNHANDLED PROMISE REJECTION ERROR
 process.on('unhandledRejection', (err) => {
-	logger.error(`${err.name}: ${err.message}`);
 	logger.info('UNHANDLED REJECTION! Shutting down Server....!');
+	logger.error(`${err.name}: ${err.message}`);
 	server.close(() => {
 		process.exit(1);
 	});
