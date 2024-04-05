@@ -25,7 +25,7 @@
 		"helmet": "^3.23.3",
 		"hpp": "^0.2.3",
 		"jsonwebtoken": "^8.5.1",
-		"mongoose": "^5.10.5",
+		"mongoose": "^5.13.22",
 		"morgan": "^1.10.0",
 		"nodemailer": "^6.9.9",
 		"pug": "^3.0.1",
